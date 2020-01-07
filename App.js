@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
 import Constants from 'expo-constants';
+
+import {
+  List,
+  ActivityIndicator,
+  Colors,
+} from 'react-native-paper';
 
 import Packages from './services/package';
 
@@ -25,8 +31,24 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{(this.state.data || []).count()}</Text>
-        <Text>{(this.state.loading) ? 'Loading…' : 'Loaded.'}</Text>
+        {this.state.loading && (
+          <ActivityIndicator animating={true} color={Colors.red800} />
+        )}
+
+        {!this.state.loading && (
+          <FlatList
+            data={this.state.data}
+            renderItem={({ item }) => (
+              <List.Item
+                titleStyle={styles.title}
+                title={item}
+                left={props => (
+                  <List.Icon {...props} style={styles.icon} icon="package" />
+                )}
+              />
+            )}
+          />
+        )}
       </View>
     );
   }
@@ -40,10 +62,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
     padding: 8,
   },
-  paragraph: {
-    margin: 24,
+  title: {
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
+  icon: {},
 });
