@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
-import Constants from 'expo-constants';
+import { View, StyleSheet, FlatList } from 'react-native';
 
 import {
   List,
@@ -44,7 +43,8 @@ export default class App extends React.Component {
                   this.props.navigation.navigate('Details')
                 }
                 titleStyle={styles.title}
-                title={item}
+                title={item.key}
+                description={item.status}
                 left={props => (
                   <List.Icon {...props} style={styles.icon} icon="package" />
                 )}
