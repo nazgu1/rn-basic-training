@@ -12,6 +12,11 @@ export default class Packages {
 
   constructor() { }
 
+  addPackage(number) {
+    this.packages.push(number);
+  }
+
+
   async fetch() {
     let results = this.packages.map(async item => {
       return this.paczkomatyProvider.fetch(item);
