@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
+import Constants from 'expo-constants';
 
 import {
   List,
@@ -40,7 +41,10 @@ export default class App extends React.Component {
             renderItem={({ item }) => (
               <List.Item
                 onPress={() =>
-                  this.props.navigation.navigate('Details')
+                  this.props.navigation.navigate('Details', {
+                    number: item.key,
+                    item: item,
+                  })
                 }
                 titleStyle={styles.title}
                 title={item.key}
