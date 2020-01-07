@@ -1,13 +1,8 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Linking } from 'expo';
 
-import {
-  Card,
-  Button,
-  Paragraph,
-  Title,
-} from 'react-native-paper';
+import { Card, Button, Paragraph, Title } from 'react-native-paper';
 
 export default class DetailsView extends React.Component {
   state = {
@@ -27,8 +22,21 @@ export default class DetailsView extends React.Component {
   render() {
     let { item } = this.state;
 
+    let trackingDetailsElements = (
+      item.tracking_details || [{ status: 'Not found', datetime: '' }]
+    ).map(item => {
+      return (
+        <Card style={styles.card}>
+          <Card.Content>
+            <Title>{item.status}</Title>
+            <Paragraph>{item.datetime}</Paragraph>
+          </Card.Content>
+        </Card>
+      );
+    });
+
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container} containerInnerStyle={styles.containerInnerStyle}>
         <Card style={styles.card}>
           <Card.Content>
             <Title>{item.key}</Title>
@@ -51,7 +59,9 @@ export default class DetailsView extends React.Component {
             </Button>
           </Card.Actions>
         </Card>
-      </View>
+
+        <>{trackingDetailsElements}</>
+      </ScrollView>
     );
   }
 }
@@ -62,4 +72,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#ecf0f1',
   },
+  containerInnerStyle: {
+    paddingBottom: 30,
+  },
+  card: { marginVertical: 5 },
 });
