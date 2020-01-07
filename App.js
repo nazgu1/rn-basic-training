@@ -2,22 +2,31 @@ import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
-// You can import from local files
-import AssetExample from './components/AssetExample';
-
-// or any pure javascript modules available in npm
-import { Card } from 'react-native-paper';
+import Packages from './services/package';
 
 export default class App extends React.Component {
+  packageService = new Packages();
+
+  state = {
+    data: [],
+    loading: true,
+  };
+
+  async fetchData() {
+    this.setState({ loading: true });
+    this.setState({ data: await this.packageService.fetch() });
+    this.setState({ loading: false });
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.paragraph}>
-          Change code in the editor and watch it change on your phone! Save to get a shareable url.
-        </Text>
-        <Card>
-          <AssetExample />
-        </Card>
+        <Text>{(this.state.data || []).count()}</Text>
+        <Text>{(this.state.loading) ? 'Loading…' : 'Loaded.'}</Text>
       </View>
     );
   }
