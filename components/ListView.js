@@ -36,12 +36,19 @@ export default class App extends React.Component {
     loading: true,
     addingPackage: false,
     number: '',
+    refreshing: false,
   };
 
   async fetchData() {
     this.setState({ loading: true });
     this.setState({ data: await this.packageService.fetch() });
     this.setState({ loading: false });
+  }
+
+  async refreshData() {
+    this.setState({ refreshing: true });
+    this.setState({ data: await this.packageService.fetch() });
+    this.setState({ refreshing: false });
   }
 
   addPackage() {
@@ -99,6 +106,8 @@ export default class App extends React.Component {
 
           {!this.state.loading && (
             <FlatList
+              onRefresh={this.refreshData.bind(this)}
+              refreshing={this.state.refreshing}
               data={this.state.data}
               renderItem={({ item }) => (
                 <List.Item
